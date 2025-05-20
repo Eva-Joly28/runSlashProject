@@ -11,6 +11,15 @@ int main()
     // Taille de la carte plus grande que la fenêtre
     const sf::Vector2f mapSize(2000.f, 1000.f);
 
+    // Charger l'image de fond
+    //sf::Texture textureFond("image / cemonprojet.jpg");
+    sf::Texture textureFond;
+    if (!textureFond.loadFromFile("C://Users//Utilisateur//Source//Repos//runSlashProject//image//cemonprojet.jpg")) {
+        return -1; // Gérer l'erreur si l'image ne peut pas être chargée
+    }
+    sf::Sprite spriteFond(textureFond);
+    spriteFond.setScale({ 2.5f,1.8f });
+
     // Rétrécir la boule
     sf::CircleShape* cercle_courant = new sf::CircleShape(25.f); // Réduit la taille à 25
     cercle_courant->setFillColor(sf::Color::Green);
@@ -149,6 +158,9 @@ int main()
 
         window.clear();
         window.setView(vue); // Appliquer la vue
+
+        // Dessiner le fond
+        window.draw(spriteFond);
 
         for (const auto& mur : murs)
         {
