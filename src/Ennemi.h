@@ -8,7 +8,6 @@ private:
 
 public:
 	Ennemi();
-	virtual ~Ennemi();
 
 	void move(sf::Vector2f direction);
 
