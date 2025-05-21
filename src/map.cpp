@@ -4,7 +4,7 @@
 
 Map::Map() : mapSize(2500.f, 2000.f)
 {
-    textureFond.loadFromFile("C://Users//Utilisateur//Source//Repos//runSlashProject//image//cemonprojet.jpg");
+    textureFond.loadFromFile("assets//map.jpg");
     spriteFond = new sf::Sprite(textureFond);
 
     spriteFond->setScale({ 3.f,2.3f });
@@ -52,6 +52,10 @@ void Map::Create_border()
 void Map::add_obstacle()
 {
 
+}
+sf::Sprite* Map::getSprite()
+{
+    return spriteFond;
 }
 void Map::check_collision()
 {
