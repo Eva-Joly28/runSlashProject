@@ -1,34 +1,38 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "Joueur.h"
 #include "Map.h"
 
 #define VITESSE_DEPLACEMENT 120
-
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 1800, 900 }), "Run & Slash !");
+    auto window = sf::RenderWindow(sf::VideoMode({700, 600}), "Run & Slash");
     window.setFramerateLimit(60);
 
     Map map;
 
-    sf::CircleShape* cercle_courant = new sf::CircleShape(25.f);
-    cercle_courant->setFillColor(sf::Color::Green);
-    cercle_courant->setPosition({ 200.f, 150.f });
+    Joueur player1;
+    sf::Sprite* spritePlayer1 = player1.getSprite();
 
-    std::vector<sf::Drawable*> mes_cercles;
-    mes_cercles.push_back(cercle_courant);
+    /*sf::RenderTexture* myText = new sf::RenderTexture(sf::Vector2u(20, 20));
+    myText->clear(sf::Color::Red);
+    sf::Sprite test(myText->getTexture());
+
+    test.setPosition({ 200.f, 150.f });*/
+
+    spritePlayer1->setScale({ 50.0f, 70.0f });
+    spritePlayer1->setPosition({ 200.f, 150.f });
 
     bool moveleft = false, moveright = false, moveup = false, movedown = false;
 
     sf::Clock clock;
-    sf::Time dureeIteration = sf::Time::Zero;
+    sf::Time deltaTime = sf::Time::Zero;
 
     sf::View vue(sf::FloatRect({ 0.f, 0.f }, { 400.f, 300.f }));
 
     while (window.isOpen())
     {
-        dureeIteration = clock.restart();
-
+        deltaTime = clock.restart();
         while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
@@ -52,12 +56,6 @@ int main()
                 case sf::Keyboard::Scancode::Down:
                     movedown = true;
                     break;
-                case sf::Keyboard::Scancode::Space:
-                    cercle_courant = new sf::CircleShape(25.f);
-                    cercle_courant->setFillColor(sf::Color::Red);
-                    cercle_courant->setPosition({ 200.f, 150.f });
-                    mes_cercles.push_back(cercle_courant);
-                    break;
                 }
             }
             else if (const auto* key = event->getIf<sf::Event::KeyReleased>())
@@ -78,19 +76,18 @@ int main()
                     break;
                 }
             }
+
         }
-
-        // Déplacement
-        sf::Vector2f movement(0.f, 0.f);
-        if (moveleft) movement.x -= VITESSE_DEPLACEMENT * dureeIteration.asSeconds();
-        if (moveright) movement.x += VITESSE_DEPLACEMENT * dureeIteration.asSeconds();
-        if (moveup) movement.y -= VITESSE_DEPLACEMENT * dureeIteration.asSeconds();
-        if (movedown) movement.y += VITESSE_DEPLACEMENT * dureeIteration.asSeconds();
-
+        sf::Vector2f direction(0.f, 0.f); 
+        // Passer en paramètre via le main peut-être
+        if (moveleft) { direction.x -= (VITESSE_DEPLACEMENT * deltaTime.asSeconds()); }
+        if (moveright) { direction.x += (VITESSE_DEPLACEMENT * deltaTime.asSeconds());}
+        if (moveup) { direction.y -= (VITESSE_DEPLACEMENT * deltaTime.asSeconds()); }
+        if (movedown) { direction.y += (VITESSE_DEPLACEMENT * deltaTime.asSeconds()); }
         // Collision
-        sf::FloatRect nextBounds = cercle_courant->getGlobalBounds();
-        nextBounds.position.x += movement.x;
-        nextBounds.position.y += movement.y;
+        sf::FloatRect nextBounds = spritePlayer1->getGlobalBounds();
+        nextBounds.position.x += direction.x;
+        nextBounds.position.y += direction.y;
 
         bool collision = false;
         for (const auto& mur : map.getMurs())
@@ -104,11 +101,14 @@ int main()
 
         if (!collision)
         {
-            cercle_courant->move(movement);
+            //std::cout << direction.x  << "," << direction.y << std::endl;
+            player1.update(direction);
+            //test.move(direction);
         }
-
+        
         // Mise à jour de la vue
-        sf::Vector2f centreVue = cercle_courant->getPosition() + sf::Vector2f(cercle_courant->getRadius(), cercle_courant->getRadius());
+        sf::Vector2f centreVue = spritePlayer1->getPosition() +spritePlayer1->getScale();
+
         sf::Vector2f mapSize = map.getMapSize();
 
         if (centreVue.x < 200.f) centreVue.x = 200.f;
@@ -116,24 +116,18 @@ int main()
         if (centreVue.y < 150.f) centreVue.y = 150.f;
         if (centreVue.y > mapSize.y - 150.f) centreVue.y = mapSize.y - 150.f;
 
-        vue.setCenter(centreVue);
+        //vue.setCenter(centreVue);
         window.setView(vue);
 
         window.clear();
         map.draw(window);
-
-        for (auto& cercle : mes_cercles)
-        {
-            window.draw(*cercle);
-        }
+        window.draw(*spritePlayer1);
+        //window.draw(test);
+      
+        
 
         window.display();
-    }
-
-    for (auto& cercle : mes_cercles)
-    {
-        delete cercle;
-    }
+     }
 
     return 0;
 }
