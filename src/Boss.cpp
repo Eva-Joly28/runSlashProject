@@ -5,8 +5,9 @@ Boss::Boss()
 	if (!texture.loadFromFile("assets/Boss.png")) {
 		// a gerer
 	}
-	sprite.setTexture(texture);
-	sprite.setPosition(position);
+	sprite = new sf::Sprite(texture);
+	//sprite->setTexture(texture);
+	sprite->setPosition(position);
 }
 Boss::~Boss()
 {

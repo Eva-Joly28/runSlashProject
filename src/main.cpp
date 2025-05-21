@@ -43,7 +43,10 @@ int main()
 
 	Joueur player1;
 	sf::Sprite* spritePlayer1 = player1.getSprite();
-    spritePlayer1->setScale({ 50.0f, 70.0f });
+    sf::Vector2u tailleTexture = spritePlayer1->getTexture().getSize();
+    float scaleX = 100.f / tailleTexture.x;
+    float scaleY = 150.f / tailleTexture.y;
+    spritePlayer1->setScale({ scaleX, scaleY });
 	spritePlayer1->setPosition({ 200.f, 150.f });
 	
 	sf::Clock clock;
@@ -100,10 +103,23 @@ int main()
 
         sf::Vector2f direction(0.f, 0.f); 
         // Passer en paramètre via le main peut-être
-        if (moveleft) { direction.x -= (100.f * deltaTime.asSeconds()); }
-        if (moveright) { direction.x += 100.f * deltaTime.asSeconds();}
-        if (moveup) { direction.y -= 100.f * deltaTime.asSeconds(); }
-        if (movedown) { direction.y += 100.f * deltaTime.asSeconds(); }
+        if (moveleft) {
+            spritePlayer1->setRotation(sf::degrees(180));
+            direction.x -= (100.f * deltaTime.asSeconds());
+        }
+        if (moveright) {
+            spritePlayer1->setRotation(sf::degrees(-180));
+            direction.x += 100.f * deltaTime.asSeconds();
+
+        }
+        if (moveup) { 
+            spritePlayer1->setRotation(sf::degrees(90));
+            direction.y -= 100.f * deltaTime.asSeconds(); 
+        }
+        if (movedown) {
+            spritePlayer1->setRotation(sf::degrees(-90));
+            direction.y += 100.f * deltaTime.asSeconds(); 
+        }
 
 		player1.update(direction);
 
