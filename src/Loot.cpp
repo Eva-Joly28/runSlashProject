@@ -2,36 +2,34 @@
 
 Loot::Loot()
 {
-	if (!texture.loadFromFile("assets/Loot.png")) {
-		
-	}
-	sprite.setTexture(texture);
-	sprite.setPosition(position);
-}
-
-Loot::~Loot() {}
-
-void Loot::setLootType(enum type)
-{
-	lootType = type;
-}
-
-enum Loot::getLootType() const
-{
-	return lootType;
-}
-
-void Loot::applyEffect(sf::Sprite& target)
-{
-	switch (lootType) {
-	case ARMURE:
 	
+}
+
+void Loot::setLootType(LootType type)
+{
+	this->type = type;
+}
+
+
+LootType Loot::getLootType() const
+{
+	return type;
+}
+
+void Loot::switchDegats()
+{
+	switch (type) {
+	case ARMURE:
+		//float res = 0.2f;
+		//target->setResistance(res);
 		break;
 	case BAZOOKA:
-		
+		degats = 40;
+		//target->takeDamage(degats);
 		break;
 	case PISTOLET:
-		
+		degats = 20;
+		//target->takeDamage(degats);
 		break;
 	default:
 		break;

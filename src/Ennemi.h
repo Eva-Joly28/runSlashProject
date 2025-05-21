@@ -1,15 +1,19 @@
-#pragma once
-#include Personnage.h
+#include "Personnage.h"
 #include <SFML/Graphics.hpp>
 
 class Ennemi : public Personnage
 {
 private:
-	int speed;
+	float speed;
 
 public:
 	Ennemi();
 	virtual ~Ennemi();
-	void move(float deltaTime);
-}
+
+	void move(sf::Vector2f direction);
+
+	virtual void attack() = 0;
+	virtual void update(sf::Vector2f direction) = 0;
+};
+
 

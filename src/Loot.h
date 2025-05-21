@@ -1,23 +1,26 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class Loot {
-private:
-	sf : Clock coolDown;
-	LootType type ;
-	
-public:
-	Loot();
-	~Loot();
-	void setLootType(LootType type);
-	int getLootType() const;
-	
-	void applyEffect(sf::Sprite& target);
-	
-};
 
-enum LootType {
+typedef enum LootType {
 	ARMURE,
 	BAZOOKA,
 	PISTOLET
+} LootType;
+
+class Loot {
+private:
+	sf::Clock cooldown;
+	LootType type ;
+	int degats;
+	
+public:
+	Loot();
+	void setLootType(LootType type);
+	LootType getLootType() const;
+	
+	void switchDegats();
 };
+
+
+

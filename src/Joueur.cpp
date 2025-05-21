@@ -1,28 +1,71 @@
-#include Joueur.h
+#include "Joueur.h"
 
-Joueur::Joueur() : Personnage(), coolDown(sf::seconds(1.f)) {
-	if (!texture.loadFromFile("assets/Player.png")) {
-		// Handle error
-	}
+#define SPEED 100.f
+
+
+Joueur::Joueur() : Personnage() {
+    if (!texture.loadFromFile("assets//joueur.png")) {
+		std::cerr << "Error loading texture" << std::endl;
+        return;
+        
+    }
+	cooldownTime = sf::seconds(0.5f);
 	sprite.setTexture(texture);
 	sprite.setPosition(position);
-}
-Joueur::~Joueur() {}
+	sprite.setScale({ 0.5f,0.7f });
 
-void Joueur::addLoot() {
+}
+
+void Joueur::addLoot(Loot *newLoot) {
 	if (Joueur::isAlive()) {
-		// Logic to add loot
+		inventaire.push_back(*newLoot);
 	}
+
+}
+
+void Joueur::update(sf::Vector2f direction)
+{
+    sprite.move(direction);
 }
 
 void Joueur::attack() {
-	if (attackTimer.getElapsedTime() >= coolDown) {
-		// Logic to attack
-		attackTimer.restart();
+	if (cooldownClock.getElapsedTime() >= cooldownTime) {
+		// Animation d'attaque
+		cooldownClock.restart();
 	}
 }
-void Joueur::dropLoot() {
-	if (Joueur::isAlive()) {
-		// Logic to drop loot
-	}
+/*
+static void switchPressedKey(bool isPressed, sf::Event::KeyPressed key) {
+    switch (key.scancode)
+    {
+        case sf::Keyboard::Scancode::Left:
+            moveleft = isPressed;
+            break;
+        case sf::Keyboard::Scancode::Right:
+            moveright = isPressed;
+            break;
+        case sf::Keyboard::Scancode::Up:
+            moveup = isPressed;
+            break;
+        case sf::Keyboard::Scancode::Down:
+            movedown = isPressed;
+            break;
+    }
 }
+*/
+
+
+void Joueur::walking(std::optional<sf::Event> *event) {
+    /*
+    if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+    {
+        switchPressedKey(true, keyPressed);
+    }
+    else if (const auto* keyPressed = event->getIf<sf::Event::KeyReleased>())
+    {
+        switchPressedKey(false, keyPressed);
+    }
+    */
+}
+
+
