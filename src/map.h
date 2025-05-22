@@ -27,6 +27,8 @@ public:
 
     void add_obstacle();
 
+    sf::Sprite* getSprite();
+
     // checks la collision 
 
     void check_collision();

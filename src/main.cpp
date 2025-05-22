@@ -13,6 +13,7 @@ int main()
 
     // Chargement de la carte
     Map map;
+    sf::Sprite* spriteMap = map.getSprite();
 
     // Création du joueur
     Joueur player1;
@@ -93,10 +94,12 @@ int main()
         if (moveDown) direction.y += VITESSE_DEPLACEMENT * deltaTime.asSeconds();
 
         // Collision
-        sf::FloatRect nextBounds = spritePlayer1->getGlobalBounds();
-        nextBounds.position.x += direction.x;
-        nextBounds.position.y += direction.y;
+        sf::FloatRect nextBounds = cercle_courant->getGlobalBounds();
+        nextBounds.position.x += movement.x;
+        nextBounds.position.y += movement.y;
+        nextBounds.position.y += movement.y;
 
+        vue.setCenter(centreVue);
         bool collision = false;
         for (const auto& mur : map.getMurs())
         {
@@ -106,7 +109,6 @@ int main()
                 break;
             }
         }
-
         if (!collision)
         {
             player1.update(direction);
@@ -115,6 +117,7 @@ int main()
         // Mise à jour de la vue pour suivre le joueur
         sf::Vector2f centreVue = spritePlayer1->getPosition() + spritePlayer1->getScale();
         sf::Vector2f mapSize = map.getMapSize();
+>>>>>>>>> Temporary merge branch 2
 
         if (centreVue.x < 200.f) centreVue.x = 200.f;
         if (centreVue.x > mapSize.x - 200.f) centreVue.x = mapSize.x - 200.f;
