@@ -9,23 +9,29 @@ Joueur::Joueur() : Personnage() {
         return;
         
     }
+
 	cooldownTime = sf::seconds(0.5f);
-	sprite.setTexture(texture);
-	sprite.setPosition(position);
-	sprite.setScale({ 0.5f,0.7f });
+    sprite = new sf::Sprite(texture);
+	sprite->setPosition(position);
+	sprite->setScale({ 0.3f,0.3f });
 
 }
 
 void Joueur::addLoot(Loot *newLoot) {
-	if (Joueur::isAlive()) {
+	if (isAlive()) {
 		inventaire.push_back(*newLoot);
 	}
 
 }
 
+int Joueur::getPv()
+{
+	return this->pv;
+}
+
 void Joueur::update(sf::Vector2f direction)
 {
-    sprite.move(direction);
+    sprite->move(direction);
 }
 
 void Joueur::attack() {
@@ -55,7 +61,7 @@ static void switchPressedKey(bool isPressed, sf::Event::KeyPressed key) {
 */
 
 
-void Joueur::walking(std::optional<sf::Event> *event) {
+void Joueur::walking() {
     /*
     if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
     {

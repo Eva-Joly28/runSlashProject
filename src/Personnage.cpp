@@ -2,7 +2,8 @@
 #include <SFML/Graphics.hpp>
 
 
-Personnage::Personnage() : pv(100), position(0.f, 0.f), sprite(texture), inventaire() {
+Personnage::Personnage() : pv(100), position(0.f, 0.f), inventaire() {
+	sprite = new sf::Sprite(texture);
 }
 
 
@@ -14,9 +15,7 @@ void Personnage::takeDamage(int dmg) {
 
 std::vector<Loot> Personnage::DropLoot() {
     // Rajouter l'animation du dropLoot ici ou perso secifique ???
-	if (!this->isAlive()) {
 		return inventaire;
-	}
 }
 
 bool Personnage::isAlive() const {
@@ -25,7 +24,7 @@ bool Personnage::isAlive() const {
 
 void Personnage::setPosition(sf::Vector2f pos) {
     position = pos;
-    sprite.setPosition(position);
+    sprite->setPosition(position);
 }
 
 void Personnage::setResistance(float res)
@@ -34,9 +33,9 @@ void Personnage::setResistance(float res)
 }
 
 sf::Vector2f Personnage::getPosition() const {
-    return sprite.getPosition();
+    return sprite->getPosition();
 }
 
 sf::Sprite* Personnage::getSprite() {
-    return &sprite;
+    return sprite;
 }
