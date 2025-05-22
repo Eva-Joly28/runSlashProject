@@ -1,15 +1,10 @@
 #include "Ennemi.h"
 
-Ennemi::Ennemi()
+Ennemi::Ennemi(Joueur* cible) : Personnage(), target(cible), speed(100)
 {
-	if (!texture.loadFromFile("assets/Ennemi.png")) {
-		
-	}
-	sprite.setTexture(texture);
-	sprite.setPosition(position);
+
 }
 
-Ennemi::~Ennemi(){}
 
 void Ennemi::move(sf::Vector2f direction)
 {
@@ -18,6 +13,6 @@ void Ennemi::move(sf::Vector2f direction)
 		direction /= length;*/
 
 	sf::Vector2f deplacement = direction * speed ;
-	sprite.move(deplacement);
+	sprite->move(deplacement);
 }
 

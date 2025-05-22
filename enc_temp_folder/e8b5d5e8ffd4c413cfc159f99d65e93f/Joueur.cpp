@@ -13,7 +13,7 @@ Joueur::Joueur() : Personnage() {
     sprite = new sf::Sprite(texture);
 	sprite->setTexture(texture);
 	sprite->setPosition(position);
-	sprite->setScale({ 0.3f,0.3f });
+	sprite->setScale({ 0.5f,0.7f });
 
 }
 

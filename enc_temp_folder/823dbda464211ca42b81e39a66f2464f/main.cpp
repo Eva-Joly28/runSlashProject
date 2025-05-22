@@ -18,6 +18,7 @@ int main()
     Joueur player1;
     sf::Sprite* spritePlayer1 = player1.getSprite();
     spritePlayer1->setOrigin({ 50.f, 50.f });
+    spritePlayer1->setScale({ 0.1f, 0.1f });
     spritePlayer1->setPosition({ 200.f, 150.f });
 
     Kamikaze kamikaze(&player1);
