@@ -1,4 +1,4 @@
-#include "map.h"
+#include "Map.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
@@ -28,22 +28,22 @@ void Map::Create_border()
     murs.clear();
 
     sf::RectangleShape mur1(sf::Vector2f(10.f, mapSize.y)); // Mur gauche
-    mur1.setFillColor(sf::Color::White);
+    mur1.setFillColor(sf::Color::Transparent);
     mur1.setPosition({ 0.f, 0.f });
     murs.push_back(mur1);
 
     sf::RectangleShape mur2(sf::Vector2f(10.f, mapSize.y)); // Mur droit
-    mur2.setFillColor(sf::Color::White);
+    mur2.setFillColor(sf::Color::Transparent);
     mur2.setPosition({ mapSize.x - 10.f, 0.f });
     murs.push_back(mur2);
 
     sf::RectangleShape mur3(sf::Vector2f(mapSize.x, 10.f)); // Mur supérieur
-    mur3.setFillColor(sf::Color::White);
+    mur3.setFillColor(sf::Color::Transparent);
     mur3.setPosition({ 0.f, 0.f });
     murs.push_back(mur3);
 
     sf::RectangleShape mur4(sf::Vector2f(mapSize.x, 10.f)); // Mur inférieur
-    mur4.setFillColor(sf::Color::White);
+    mur4.setFillColor(sf::Color::Transparent);
     mur4.setPosition({ 0.f, mapSize.y - 10.f });
     murs.push_back(mur4);
 

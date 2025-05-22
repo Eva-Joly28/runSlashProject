@@ -1,13 +1,16 @@
+#pragma once
 #include "Personnage.h"
 #include <SFML/Graphics.hpp>
+#include "Joueur.h"
 
 class Ennemi : public Personnage
 {
-private:
+protected:
+	Joueur* target;
 	float speed;
 
 public:
-	Ennemi();
+	Ennemi(Joueur* target);
 
 	void move(sf::Vector2f direction);
 

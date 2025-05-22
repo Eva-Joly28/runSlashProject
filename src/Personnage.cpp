@@ -3,7 +3,7 @@
 
 
 Personnage::Personnage() : pv(100), position(0.f, 0.f), inventaire() {
-    sprite = new sf::Sprite(texture);
+	sprite = new sf::Sprite(texture);
 }
 
 
@@ -15,9 +15,7 @@ void Personnage::takeDamage(int dmg) {
 
 std::vector<Loot> Personnage::DropLoot() {
     // Rajouter l'animation du dropLoot ici ou perso secifique ???
-    if (!this->isAlive()) {
-        return inventaire;
-    }
+		return inventaire;
 }
 
 bool Personnage::isAlive() const {
