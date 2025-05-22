@@ -1,89 +1,97 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Joueur.h"
-#include "Map.h"
+#include "map.h"
 
 #define VITESSE_DEPLACEMENT 120
+
 int main()
 {
-    auto window = sf::RenderWindow(sf::VideoMode({700, 600}), "Run & Slash");
+    // Création de la fenêtre
+    sf::RenderWindow window(sf::VideoMode({ 700, 600 }), "Run & Slash");
     window.setFramerateLimit(60);
 
+    // Chargement de la carte
     Map map;
 
+    // Création du joueur
     Joueur player1;
     sf::Sprite* spritePlayer1 = player1.getSprite();
+    spritePlayer1->setScale({ 50.0f, 70.0f });  // Mise à l'échelle du sprite
+    spritePlayer1->setPosition({ 200.f, 150.f });  // Position initiale
 
-    /*sf::RenderTexture* myText = new sf::RenderTexture(sf::Vector2u(20, 20));
-    myText->clear(sf::Color::Red);
-    sf::Sprite test(myText->getTexture());
+    // Variables de déplacement
+    bool moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
 
-    test.setPosition({ 200.f, 150.f });*/
-
-    spritePlayer1->setScale({ 50.0f, 70.0f });
-    spritePlayer1->setPosition({ 200.f, 150.f });
-
-    bool moveleft = false, moveright = false, moveup = false, movedown = false;
-
+    // Horloge pour le deltaTime
     sf::Clock clock;
     sf::Time deltaTime = sf::Time::Zero;
 
+    // Vue initiale
     sf::View vue(sf::FloatRect({ 0.f, 0.f }, { 400.f, 300.f }));
 
+    // Boucle principale
     while (window.isOpen())
     {
         deltaTime = clock.restart();
-        while (const std::optional event = window.pollEvent())
+
+        // Gestion des événements
+        while (const std::optional<sf::Event> event = window.pollEvent())
         {
-            if (event->is<sf::Event::Closed>())
+            if (event->type == sf::Event::Closed)
                 window.close();
-            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+            else if (event->type == sf::Event::KeyPressed)
             {
-                switch (keyPressed->scancode)
+                switch (event->key.scancode)
                 {
                 case sf::Keyboard::Scancode::Escape:
                     window.close();
                     break;
                 case sf::Keyboard::Scancode::Left:
-                    moveleft = true;
+                    moveLeft = true;
                     break;
                 case sf::Keyboard::Scancode::Right:
-                    moveright = true;
+                    moveRight = true;
                     break;
                 case sf::Keyboard::Scancode::Up:
-                    moveup = true;
+                    moveUp = true;
                     break;
                 case sf::Keyboard::Scancode::Down:
-                    movedown = true;
+                    moveDown = true;
+                    break;
+                default:
                     break;
                 }
             }
-            else if (const auto* key = event->getIf<sf::Event::KeyReleased>())
+            else if (event->type == sf::Event::KeyRelease)
             {
-                switch (key->scancode)
+                switch (event->key.scancode)
                 {
                 case sf::Keyboard::Scancode::Left:
-                    moveleft = false;
+                    moveLeft = false;
                     break;
                 case sf::Keyboard::Scancode::Right:
-                    moveright = false;
+                    moveRight = false;
                     break;
                 case sf::Keyboard::Scancode::Up:
-                    moveup = false;
+                    moveUp = false;
                     break;
                 case sf::Keyboard::Scancode::Down:
-                    movedown = false;
+                    moveDown = false;
+                    break;
+                default:
                     break;
                 }
             }
-
         }
-        sf::Vector2f direction(0.f, 0.f); 
-        // Passer en paramètre via le main peut-être
-        if (moveleft) { direction.x -= (VITESSE_DEPLACEMENT * deltaTime.asSeconds()); }
-        if (moveright) { direction.x += (VITESSE_DEPLACEMENT * deltaTime.asSeconds());}
-        if (moveup) { direction.y -= (VITESSE_DEPLACEMENT * deltaTime.asSeconds()); }
-        if (movedown) { direction.y += (VITESSE_DEPLACEMENT * deltaTime.asSeconds()); }
+
+        // Calcul de la direction de déplacement
+        sf::Vector2f direction(0.f, 0.f);
+        if (moveLeft) direction.x -= VITESSE_DEPLACEMENT * deltaTime.asSeconds();
+        if (moveRight) direction.x += VITESSE_DEPLACEMENT * deltaTime.asSeconds();
+        if (moveUp) direction.y -= VITESSE_DEPLACEMENT * deltaTime.asSeconds();
+        if (moveDown) direction.y += VITESSE_DEPLACEMENT * deltaTime.asSeconds();
+
         // Collision
         sf::FloatRect nextBounds = spritePlayer1->getGlobalBounds();
         nextBounds.position.x += direction.x;
@@ -101,14 +109,11 @@ int main()
 
         if (!collision)
         {
-            //std::cout << direction.x  << "," << direction.y << std::endl;
             player1.update(direction);
-            //test.move(direction);
         }
-        
-        // Mise à jour de la vue
-        sf::Vector2f centreVue = spritePlayer1->getPosition() +spritePlayer1->getScale();
 
+        // Mise à jour de la vue pour suivre le joueur
+        sf::Vector2f centreVue = spritePlayer1->getPosition() + spritePlayer1->getScale();
         sf::Vector2f mapSize = map.getMapSize();
 
         if (centreVue.x < 200.f) centreVue.x = 200.f;
@@ -116,18 +121,15 @@ int main()
         if (centreVue.y < 150.f) centreVue.y = 150.f;
         if (centreVue.y > mapSize.y - 150.f) centreVue.y = mapSize.y - 150.f;
 
-        //vue.setCenter(centreVue);
+        vue.setCenter(centreVue);
         window.setView(vue);
 
+        // Affichage
         window.clear();
         map.draw(window);
         window.draw(*spritePlayer1);
-        //window.draw(test);
-      
-        
-
         window.display();
-     }
+    }
 
     return 0;
 }

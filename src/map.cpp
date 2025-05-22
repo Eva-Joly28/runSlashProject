@@ -1,4 +1,4 @@
-#include "Map.h"
+#include "map.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 

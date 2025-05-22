@@ -5,8 +5,8 @@ Epeiste::Epeiste()
 	if (!texture.loadFromFile("assets/Epeiste.png")) {
 		// Handle error
 	}
-	sprite.setTexture(texture);
-	sprite.setPosition(position);
+	sprite->setTexture(texture);
+	sprite->setPosition(position);
 }
 void Epeiste::fight() {
 	// animation bagarre à l'épée
