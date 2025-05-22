@@ -10,7 +10,7 @@ private:
 	sf::Clock cooldownClock;
 	sf::Time cooldownTime;
 
-public : 
+public:
 	Joueur();
 
 	void addLoot(Loot *newLoot);

@@ -37,3 +37,4 @@ public:
     sf::Vector2f getMapSize() const;
 
 };
+

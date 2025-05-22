@@ -4,7 +4,9 @@
 #include "Kamikaze.h"
 #include "Epeiste.h"
 #include "Boss.h"
+#include <iostream>
 
+using namespace std;
 #define VITESSE 120
 
 int main()
@@ -17,7 +19,6 @@ int main()
 
     Joueur player1;
     sf::Sprite* spritePlayer1 = player1.getSprite();
-    spritePlayer1->setOrigin({(spritePlayer1->getGlobalBounds().size.x)/2 ,(spritePlayer1->getGlobalBounds().size.y) / 2 });
     spritePlayer1->setPosition({ 200.f, 150.f });
    
 
@@ -53,6 +54,7 @@ int main()
 
     sf::View vue(sf::FloatRect({ 0.f, 0.f }, { 400.f, 300.f }));
 
+    // Boucle principale
     while (window.isOpen())
     {
         deltaTime = clock.restart();
@@ -191,6 +193,9 @@ int main()
         {
             if (nextBounds.findIntersection(mur.getGlobalBounds()))
             {
+                /*cout << spritePlayer1->getPosition().x << " tata" << endl;
+                cout << mur.getPosition().x << " toto" << endl;
+                cout << spritePlayer1->getPosition().x << " toto" << endl;*/
                 collision = true;
                 break;
             }

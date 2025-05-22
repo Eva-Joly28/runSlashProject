@@ -34,7 +34,7 @@ void Kamikaze::update(sf::Vector2f direction)
 		move(direction);
 
 	}
-	
+
 }
 
 void Kamikaze::explode()

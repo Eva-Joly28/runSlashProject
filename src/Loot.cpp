@@ -2,7 +2,7 @@
 
 Loot::Loot()
 {
-	
+
 }
 
 void Loot::setLootType(LootType type)

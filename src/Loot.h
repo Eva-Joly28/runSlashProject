@@ -11,14 +11,14 @@ typedef enum LootType {
 class Loot {
 private:
 	sf::Clock cooldown;
-	LootType type ;
+	LootType type;
 	int degats;
-	
+
 public:
 	Loot();
 	void setLootType(LootType type);
 	LootType getLootType() const;
-	
+
 	void switchDegats();
 };
 

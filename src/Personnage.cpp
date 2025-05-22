@@ -29,7 +29,7 @@ void Personnage::setPosition(sf::Vector2f pos) {
 
 void Personnage::setResistance(float res)
 {
-	resistance = res;
+    resistance = res;
 }
 
 sf::Vector2f Personnage::getPosition() const {

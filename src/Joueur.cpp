@@ -5,13 +5,15 @@
 
 Joueur::Joueur() : Personnage() {
     if (!texture.loadFromFile("assets//joueur.png")) {
-		std::cerr << "Error loading texture" << std::endl;
+        std::cerr << "Error loading texture" << std::endl;
         return;
-        
+
     }
 
 	cooldownTime = sf::seconds(0.5f);
     sprite = new sf::Sprite(texture);
+    sf::FloatRect bounds = sprite->getLocalBounds();
+    sprite->setOrigin({ (bounds.size.x) / 2.f ,bounds.size.y });
 	sprite->setPosition(position);
 	sprite->setScale({ 0.3f,0.3f });
 
@@ -35,10 +37,10 @@ void Joueur::update(sf::Vector2f direction)
 }
 
 void Joueur::attack() {
-	if (cooldownClock.getElapsedTime() >= cooldownTime) {
-		// Animation d'attaque
-		cooldownClock.restart();
-	}
+    if (cooldownClock.getElapsedTime() >= cooldownTime) {
+        // Animation d'attaque
+        cooldownClock.restart();
+    }
 }
 /*
 static void switchPressedKey(bool isPressed, sf::Event::KeyPressed key) {

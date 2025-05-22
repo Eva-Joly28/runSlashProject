@@ -19,7 +19,7 @@ public:
 	Personnage();
 
 	virtual void update(sf::Vector2f direction) = 0;
-	virtual void attack() = 0; 
+	virtual void attack() = 0;
 
 	void takeDamage(int damage);
 	std::vector<Loot> DropLoot();
