@@ -12,23 +12,27 @@ int main()
     auto window = sf::RenderWindow(sf::VideoMode({ 900, 700 }), "Run & Slash");
     window.setFramerateLimit(60);
 
-    Map map;
+    Map map; 
     sf::Sprite* spriteMap = map.getSprite();
 
     Joueur player1;
     sf::Sprite* spritePlayer1 = player1.getSprite();
-    spritePlayer1->setOrigin({ 50.f, 50.f });
+    spritePlayer1->setOrigin({(spritePlayer1->getGlobalBounds().size.x)/2 ,(spritePlayer1->getGlobalBounds().size.y) / 2 });
     spritePlayer1->setPosition({ 200.f, 150.f });
+   
 
     Kamikaze kamikaze(&player1);
     sf::Sprite* spriteKamikaze = kamikaze.getSprite();
-    spritePlayer1->setScale({ 0.9f, 0.9f });
-    spritePlayer1->setPosition({ 1930.f, 0.f });
+   
+    spriteKamikaze->rotate(sf::degrees(180));
+    spriteKamikaze->setScale({ 0.9f, 0.9f });
+    spriteKamikaze->setPosition({ 100.f, 300.f });
 
 	Epeiste epeiste(&player1);
     sf::Sprite* spriteEpeiste = epeiste.getSprite();
-    spritePlayer1->setScale({ 0.9f, 0.9f });
-    spritePlayer1->setPosition({ 1200.f, 120.f });
+    //spriteEpeiste->setRotation(sf::degrees(90));
+    spriteEpeiste->setScale({ 0.9f, 0.9f });
+    spriteEpeiste->setPosition({ 100.f, 200.f });
 
     Boss boss(&player1);
     sf::Sprite* spriteBoss = boss.getSprite();
@@ -42,7 +46,7 @@ int main()
 	spriteBarreVie->setScale({ 3.0f, 3.0f });
 	spriteBarreVie->setPosition({ 670.f, 35.f });
 
-    bool moveleft = false, moveright = false, moveup = false, movedown = false;
+    bool moveleft = false, moveright = false, moveup = false, movedown = false, turnleft = false, turnright = false;
 
     sf::Clock clock;
     sf::Time deltaTime = sf::Time::Zero;
@@ -75,6 +79,12 @@ int main()
                 case sf::Keyboard::Scancode::Down:
                     movedown = true;
                     break;
+                case sf::Keyboard::Scancode::G:
+                    turnleft = true;
+                    break;
+                case sf::Keyboard::Scancode::D:
+                    turnright = true;
+                    break;
                 }
             }
             else if (const auto* key = event->getIf<sf::Event::KeyReleased>())
@@ -93,6 +103,13 @@ int main()
                 case sf::Keyboard::Scancode::Down:
                     movedown = false;
                     break;
+                case sf::Keyboard::Scancode::G:
+                    turnleft = false;
+                    break;
+                case sf::Keyboard::Scancode::D:
+                    turnright = false;
+                    break;
+                
                 }
             }
         }
@@ -130,17 +147,26 @@ int main()
             direction.x -= (VITESSE * deltaTime.asSeconds());
         }
         if (moveright) {
-            spritePlayer1->setRotation(sf::degrees(180));
+            
+            spritePlayer1->setRotation(sf::degrees(0));
             direction.x += VITESSE * deltaTime.asSeconds();
 
         }
         if (moveup) {
-            spritePlayer1->setRotation(sf::degrees(90));
+            
+            spritePlayer1->setRotation(sf::degrees(270));
             direction.y -= VITESSE * deltaTime.asSeconds();
         }
         if (movedown) {
-            spritePlayer1->setRotation(sf::degrees(-90));
+            
+            spritePlayer1->setRotation(sf::degrees(90));
             direction.y += VITESSE * deltaTime.asSeconds();
+        }
+		if (turnleft) {
+			spritePlayer1->rotate(sf::degrees(3));
+		}
+        if (turnright) {
+            spritePlayer1->rotate(sf::degrees(-3));
         }
         spritePlayer1->move(direction);
 

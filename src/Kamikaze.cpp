@@ -5,7 +5,7 @@ Kamikaze::Kamikaze(Joueur* target) : Ennemi(target)
 	if (!texture.loadFromFile("assets//Kamikaze.png")) {
 		// Handle error
 	}
-	sprite->setTexture(texture);
+	sprite = new sf::Sprite(texture);
 	sprite->setPosition(position);
 }
 
