@@ -12,6 +12,8 @@ Joueur::Joueur() : Personnage() {
 
 	cooldownTime = sf::seconds(0.5f);
     sprite = new sf::Sprite(texture);
+    sf::FloatRect bounds = sprite->getLocalBounds();
+    sprite->setOrigin({ (bounds.size.x) / 2.f ,bounds.size.y });
 	sprite->setPosition(position);
 	sprite->setScale({ 0.3f,0.3f });
 

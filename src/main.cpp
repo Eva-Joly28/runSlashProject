@@ -19,8 +19,6 @@ int main()
 
     Joueur player1;
     sf::Sprite* spritePlayer1 = player1.getSprite();
-    sf::FloatRect bounds = spritePlayer1->getLocalBounds();
-    spritePlayer1->setOrigin({ bounds.size.x / 2.f ,bounds.size.y });
     spritePlayer1->setPosition({ 200.f, 150.f });
 
     Kamikaze kamikaze(&player1);
@@ -138,16 +136,17 @@ int main()
             direction.x -= (VITESSE * deltaTime.asSeconds());
         }
         if (moveright) {
-            spritePlayer1->setRotation(sf::degrees(180));
+            spritePlayer1->setRotation(sf::degrees(0));
             direction.x += VITESSE * deltaTime.asSeconds();
 
         }
         if (moveup) {
-            spritePlayer1->setRotation(sf::degrees(90));
+            spritePlayer1->setRotation(sf::degrees(270));
             direction.y -= VITESSE * deltaTime.asSeconds();
         }
         if (movedown) {
-            spritePlayer1->setRotation(sf::degrees(-90));
+            //spritePlayer1->setOrigin(sf)
+            spritePlayer1->setRotation(sf::degrees(90));
             direction.y += VITESSE * deltaTime.asSeconds();
         }
         /*spritePlayer1->move(direction);*/
