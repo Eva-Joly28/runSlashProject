@@ -2,10 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include "Loot.h"
 #include <vector>
+#include <iostream>
 
 class Personnage
 {
 protected:
+	std::string path;
 	sf::Texture texture;
 	sf::Sprite* sprite;
 	sf::Vector2f position;
@@ -13,13 +15,13 @@ protected:
 
 	int pv;
 	float resistance = 0.f;
-	int degats = 0;
+	int degats ;
 
 public:
 	Personnage();
 
-	virtual void update(sf::Vector2f direction) = 0;
-	virtual void attack() = 0;
+	/*virtual void update(sf::Vector2f direction) = 0;
+	virtual void attack() = 0;*/
 
 	void takeDamage(int damage);
 	std::vector<Loot> DropLoot();
@@ -29,6 +31,8 @@ public:
 	void setResistance(float res);
 	sf::Vector2f getPosition() const;
 	sf::Sprite* getSprite();
+	void setPath(std::string& newPath);
+	std::string getPath() const;
 
 };
 

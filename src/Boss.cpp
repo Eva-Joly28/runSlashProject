@@ -1,6 +1,6 @@
 #include "Boss.h"
 
-Boss::Boss(Joueur* cible) : Ennemi(cible)
+Boss::Boss() : Ennemi()
 {
 	if (!texture.loadFromFile("assets/bossfinal.png")) {
 		// a gerer
@@ -15,19 +15,14 @@ Boss::~Boss()
 
 void Boss::attack()
 {
-	sf::Sprite* targetSprite = target->getSprite();
-	// Logique d'attaque
-	if (isAlive()) {
-		if (sprite->getGlobalBounds().position.x - targetSprite->getLocalBounds().position.x <= (2.f, 2.f)) {
-			 // Ou activer l'explosion après un certain temps je sais pas encore
-		}
-	}
+	//Pas la bonne méthode d'attaque, temporaire
+	pv = 0;
 
 }
 
-void  Boss::update(sf::Vector2f direction){
+void  Boss::updateDir(sf::Vector2f direction){
 	if (!pv) {
-		sf::Vector2f direction = target->getPosition() - getPosition();
+		//sf::Vector2f direction = target->getPosition() - getPosition();
 		move(direction);
 	}
 

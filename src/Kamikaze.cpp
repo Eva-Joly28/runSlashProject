@@ -1,7 +1,11 @@
 #include "Kamikaze.h"
 
-Kamikaze::Kamikaze(Joueur* target) : Ennemi(target)
+Kamikaze::Kamikaze() : Ennemi(), exploded(false), explosionRadius(30.f)
 {
+	explosionTexture.loadFromFile("assets/explosion.png");
+	explosion = new Explosion(explosionTexture, sprite->getPosition());
+	speed = 250.f;
+	pv = 20;
 	if (!texture.loadFromFile("assets//Kamikaze.png")) {
 		// Handle error
 	}
@@ -9,37 +13,44 @@ Kamikaze::Kamikaze(Joueur* target) : Ennemi(target)
 	sprite->setPosition(position);
 }
 
+void  Kamikaze::updateDir(sf::Vector2f direction) {
+	if (pv > 0) {
+		//sf::Vector2f direction = target->getPosition() - getPosition();
+		move(direction);
+	}
+
+}
+
 Kamikaze::~Kamikaze()
 {
+	delete explosion;
+	delete sprite;
 }
 
 void Kamikaze::attack()
 {
-	sf::Sprite* targetSprite = target->getSprite();
-	// Logique d'attaque
-	if (isAlive()) {
-		if (sprite->getGlobalBounds().position.x - targetSprite->getLocalBounds().position.x <= (2.f, 2.f)) {
-			explode(); // Ou activer l'explosion après un certain temps je sais pas encore
-		}
-	}
-	else {
-		explode();
-	}
+		//explode();
 }
 
-void Kamikaze::update(sf::Vector2f direction)
+void Kamikaze::update(sf::Vector2f playerPosition, float deltaTime, sf::RenderWindow* window)
 {
+	sf::Vector2f direction = playerPosition - sprite->getPosition();
+	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 	if (!exploded) {
-		sf::Vector2f direction = target->getPosition() - getPosition();
-		move(direction);
+		if(distance < explosionRadius){
+			explode(window);
+			exploded = true;
+			pv = 0;
+		}
 
 	}
 
 }
 
-void Kamikaze::explode()
+void Kamikaze::explode(sf::RenderWindow* window)
 {
 	// animation et logique d'explosion
-	exploded = true;
-	pv = 0;
+	explosion->update(sf::seconds(3.0f));
+	explosion->draw(*window);
+	
 }

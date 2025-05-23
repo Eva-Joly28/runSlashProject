@@ -12,6 +12,6 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp src/map.cpp src/map.h  src/Loot.cpp  src/Loot.h  src/Personnage.cpp  src/Personnage.h src/Ennemi.cpp  src/Ennemi.h  src/Joueur.cpp   src/Joueur.h src/Kamikaze.h src/Kamikaze.cpp  src/Boss.h src/Boss.cpp  src/Epeiste.h src/Epeiste.cpp )
+add_executable(main src/main.cpp src/map.cpp src/map.h  src/Loot.cpp  src/Loot.h  src/Personnage.cpp  src/Personnage.h src/Ennemi.cpp  src/Ennemi.h  src/Joueur.cpp   src/Joueur.h src/Kamikaze.h src/Kamikaze.cpp  src/Boss.h src/Boss.cpp  src/Epeiste.h src/Epeiste.cpp  src/Game.h src/Game.cpp "src/explosion.h" "src/explosion.cpp")
 target_compile_features(main PRIVATE cxx_std_20)
 target_link_libraries(main PRIVATE SFML::Graphics)

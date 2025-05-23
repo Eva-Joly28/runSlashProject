@@ -5,11 +5,11 @@
 
 class Boss : public Ennemi{
 public:
-	Boss(Joueur* cible);
+	Boss();
 	virtual ~Boss();
 	
 	void attack();
-	void update(sf::Vector2f direction);
+	void updateDir(sf::Vector2f direction);
 	void specialAttack();
 
 

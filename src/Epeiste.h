@@ -9,10 +9,8 @@ class Epeiste : public Ennemi
 	//sf::Sprite* sprite;
 	//Joueur* target;
 public:
-	Epeiste(Joueur* cible);
-	virtual ~Epeiste();
+	Epeiste();
 
-	void attack();
-	void update(sf::Vector2f direction);
+	void updateDir(sf::Vector2f direction);
 	void fight();
 };

@@ -1,22 +1,35 @@
 #include "Joueur.h"
 
-#define SPEED 100.f
+#define VITESSE 220
 
-
-Joueur::Joueur() : Personnage() {
-    if (!texture.loadFromFile("assets//joueur.png")) {
+using  namespace std;
+Joueur::Joueur() : Personnage(), moveLeft(false), moveRight(false), moveUp(false), moveDown(false), turnLeft(false), turnRight(false)
+{
+    hitbox = new sf::CircleShape(2.f);
+    pv = 100;
+	degats = 50;
+	path = "assets/joueur_handgun.png";
+    if (!texture.loadFromFile(path)) {
         std::cerr << "Error loading texture" << std::endl;
         return;
-
     }
 
-	cooldownTime = sf::seconds(0.5f);
+	cooldownTime = sf::seconds(1.0f);
     sprite = new sf::Sprite(texture);
     sf::FloatRect bounds = sprite->getLocalBounds();
-    sprite->setOrigin({ (bounds.size.x) / 2.f ,bounds.size.y });
-	sprite->setPosition(position);
+    sprite->setOrigin(bounds.getCenter());
+    sf::Vector2f origin(98.f, 116.f);
+    //sprite->setOrigin({ origin });
+    hitbox->setOrigin({ origin });
+    hitbox->setPosition({ 400.f, 150.f });
+    sprite->setPosition({ 200.f, 150.f });
 	sprite->setScale({ 0.3f,0.3f });
 
+}
+
+sf::FloatRect Joueur::gethitboxBounds()
+{
+    return hitbox->getGlobalBounds();
 }
 
 void Joueur::addLoot(Loot *newLoot) {
@@ -36,44 +49,94 @@ void Joueur::update(sf::Vector2f direction)
     sprite->move(direction);
 }
 
-void Joueur::attack() {
-    if (cooldownClock.getElapsedTime() >= cooldownTime) {
-        // Animation d'attaque
-        cooldownClock.restart();
+//void Joueur::attack() {
+//    if (cooldownClock.getElapsedTime() >= cooldownTime) {
+//        cooldownClock.restart();
+//
+//    }
+//}
+void Joueur::handleInput(std::optional<sf::Event>* eventOpt, sf::RenderWindow* window)
+{
+    if (!eventOpt || !eventOpt->has_value())
+        return;
+
+    const sf::Event& event = eventOpt->value();
+
+    if (event.is<sf::Event::Closed>()) {
+        window->close();
+    }
+    else if (const auto* keyPressed = event.getIf<sf::Event::KeyPressed>()) {
+        switch (keyPressed->scancode) {
+        case sf::Keyboard::Scancode::Left:  moveLeft = true; break;
+        case sf::Keyboard::Scancode::Right: moveRight = true; break;
+        case sf::Keyboard::Scancode::Up:    moveUp = true; break;
+        case sf::Keyboard::Scancode::Down:  moveDown = true; break;
+        case sf::Keyboard::Scancode::G:     turnLeft = true; break;
+        case sf::Keyboard::Scancode::D:     turnRight = true; break;
+        default: break;
+        }
+    }
+    else if (const auto* key = event.getIf<sf::Event::KeyReleased>()) {
+        switch (key->scancode) {
+        case sf::Keyboard::Scancode::Left:  moveLeft = false; break;
+        case sf::Keyboard::Scancode::Right: moveRight = false; break;
+        case sf::Keyboard::Scancode::Up:    moveUp = false; break;
+        case sf::Keyboard::Scancode::Down:  moveDown = false; break;
+        case sf::Keyboard::Scancode::G:     turnLeft = false; break;
+        case sf::Keyboard::Scancode::D:     turnRight = false; break;
+        default: break;
+        }
     }
 }
-/*
-static void switchPressedKey(bool isPressed, sf::Event::KeyPressed key) {
-    switch (key.scancode)
-    {
-        case sf::Keyboard::Scancode::Left:
-            moveleft = isPressed;
-            break;
-        case sf::Keyboard::Scancode::Right:
-            moveright = isPressed;
-            break;
-        case sf::Keyboard::Scancode::Up:
-            moveup = isPressed;
-            break;
-        case sf::Keyboard::Scancode::Down:
-            movedown = isPressed;
-            break;
-    }
-}
-*/
 
 
-void Joueur::walking() {
-    /*
-    if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-    {
-        switchPressedKey(true, keyPressed);
-    }
-    else if (const auto* keyPressed = event->getIf<sf::Event::KeyReleased>())
-    {
-        switchPressedKey(false, keyPressed);
-    }
-    */
+std::string Joueur::updatePv()
+{
+    std::string path;
+
+    if (pv == 100)
+        path = "assets//full_vie.png";
+    else if (pv > 35)
+        path = "assets//moins_full_vie.png";
+    else if (pv > 0)
+        path = "assets//presque_vide_vie.png";
+    else
+        path = "assets//mort_vie.png";
+	return path;
 }
+
+void Joueur::updateMovement(sf::Time deltaTime, const std::vector<sf::RectangleShape> &murs)
+{
+    sf::Vector2f direction(0.f, 0.f);
+
+    if (moveLeft) {  direction.x -= (VITESSE * deltaTime.asSeconds()); }
+    if (moveRight)  {  direction.x += (VITESSE * deltaTime.asSeconds()); }
+    if (moveUp) {  direction.y -= (VITESSE * deltaTime.asSeconds()); }
+    if (moveDown) {  direction.y += (VITESSE * deltaTime.asSeconds()); }
+    if (turnLeft) { sprite->rotate(sf::degrees(3)); }
+    if (turnRight) { sprite->rotate(sf::degrees(-3)); }
+
+    sf::FloatRect nextBounds = hitbox->getGlobalBounds();
+    nextBounds.position.x += direction.x;
+    nextBounds.position.y += direction.y;
+
+    cout << direction.x << " ma dir" << endl;
+
+    bool collision = false;
+    for (const auto& mur : murs) {
+        if (nextBounds.findIntersection(mur.getGlobalBounds())) {
+            collision = true;
+            cout  << " yes c'est true" << endl;
+        }
+    }
+    if (!collision) {
+        sprite->move(direction);
+    }
+
+
+}
+
+
+
 
 

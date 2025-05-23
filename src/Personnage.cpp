@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 
-Personnage::Personnage() : pv(100), position(0.f, 0.f), inventaire() {
+Personnage::Personnage() : pv(pv), position(0.f, 0.f), inventaire(), degats(degats) {
 	sprite = new sf::Sprite(texture);
 }
 
@@ -34,6 +34,12 @@ void Personnage::setResistance(float res)
 
 sf::Vector2f Personnage::getPosition() const {
     return sprite->getPosition();
+}
+void Personnage::setPath(std::string& newPath) {
+	path = newPath;
+}
+std::string Personnage::getPath() const {
+	return path;
 }
 
 sf::Sprite* Personnage::getSprite() {

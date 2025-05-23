@@ -1,23 +1,25 @@
 #pragma once
 #include "Ennemi.h"
 #include "Joueur.h"
+#include "explosion.h"
 #include <SFML/Graphics.hpp>
 
 class Kamikaze : public Ennemi
 {
 private:
-	//sf::Texture explosionTexture;
+	sf::Texture explosionTexture;
 	//sf::Sprite explosionSprite;
 
 	//Joueur* target;
-	bool exploded = false;
-	float explosionRadius = 50.f;
-	float speed = 180.f;
+	Explosion* explosion;
+	bool exploded;
+	float explosionRadius;
 public:
-	Kamikaze(Joueur* target);
-	virtual ~Kamikaze();
+	Kamikaze();
+	~Kamikaze();
 
 	void attack() ;
-	void update(sf::Vector2f direction) ;
-	void explode();
+	void updateDir(sf::Vector2f direction) override;
+	void update(sf::Vector2f playerPosition, float deltaTime, sf::RenderWindow* window) ;
+	void explode(sf::RenderWindow* window);
 };

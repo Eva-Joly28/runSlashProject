@@ -2,20 +2,24 @@
 #include "Personnage.h"
 #include <SFML/Graphics.hpp>
 #include "Joueur.h"
+#include <iostream>
 
 class Ennemi : public Personnage
 {
 protected:
-	Joueur* target;
 	float speed;
+	sf::Clock clock;
+	sf::CircleShape* hitbox;
 
 public:
-	Ennemi(Joueur* target);
+	Ennemi();
 
+	void draw(sf::RenderWindow& window, const sf::Drawable* toDraw);
 	void move(sf::Vector2f direction);
-
-	virtual void attack() = 0;
-	virtual void update(sf::Vector2f direction) = 0;
+	sf::FloatRect gethitboxBounds();
+	void attack(Joueur* cible);
+	virtual void updateDir(sf::Vector2f direction) = 0;
+	void updateJoueur(Joueur* cible);
 };
 
 
